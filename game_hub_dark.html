@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GameHub 3.0 — Ultimate Edition (corregido)</title>
+
+  <!-- Fuente -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+/* ---- NEBLINA VAPORWAVE ANIMADA ---- */
+.vaporwave-fog{
+  position:fixed;
+  top:0;left:0;
+  width:100%;height:100%;
+  pointer-events:none;
+  background:radial-gradient(circle at 20% 80%, rgba(255,0,150,0.12) 0%, transparent 60%),
+             radial-gradient(circle at 80% 20%, rgba(0,200,255,0.12) 0%, transparent 60%),
+             radial-gradient(circle at 50% 50%, rgba(255,255,255,0.05) 0%, transparent 70%);
+  mix-blend-mode:screen;
+  animation:fogMove 22s ease-in-out infinite;
+  z-index:0;
+}
+
+@keyframes fogMove{
+  0%{transform:translate(-3%, -3%) scale(1.05);}
+  50%{transform:translate(3%, 3%) scale(1);}
+  100%{transform:translate(-3%, -3%) scale(1.05);}
+}
+
+
+    /* MODO CLARO */
+    body.light {
+      --bg-1: #f3f3f8;
+      --bg-2: linear-gradient(135deg,#f8f8fc,#ffffff);
+      --card: rgba(0,0,0,0.06);
+      --accent: #5032ff;
+      --accent-soft: #8470ff;
+      --muted: rgba(0,0,0,0.70);
+      --glass: rgba(0,0,0,0.05);
+      --border-soft: rgba(0,0,0,0.10);
+      --shadow-1: 0 6px 22px rgba(0,0,0,0.10);
+      --shadow-card: 0 10px 28px rgba(0,0,0,0.16);
+      color:#202020;
+    }
+
+    /* =========================================================
+       GLOBAL
+    ========================================================== */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial;
+      background:var(--bg-2);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      color:#e8edf5;
+      transition: background .35s, color .35s;
+    }
+
+    /* =========================================================
+       HEADER
+    ========================================================== */
+
+    header{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      padding:20px 26px;
+      border-bottom:1px solid var(--border-soft);
+      backdrop-filter:blur(10px);
+      background:rgba(0,0,0,0.15);
+      position:sticky;
+      top:0; z-index:50;
+    }
+
+    .brand{
+      display:flex; align-items:center; gap:14px;
+    }
+
+    .logo{
+      width:52px; height:52px;
+      border-radius:14px;
+      background:linear-gradient(135deg,var(--accent),#4cc9f0);
+      display:flex; align-items:center; justify-content:center;
+      font-weight:700; font-size:1.2rem;
+      color:#071133;
+      box-shadow:0 6px 18px rgba(124,92,255,0.22);
+      transition:.3s;
+    }
+
+    .logo:hover{
+      transform:rotate(6deg) scale(1.05);
+    }
+
+    h1{margin:0; font-size:1.3rem; color:var(--accent);}
+    header .controls{margin-left:auto; display:flex; gap:12px; align-items:center;}
+
+    .btn{
+      background:var(--glass);
+      border:1px solid var(--border-soft);
+      padding:10px 14px;
+      border-radius:10px;
+      color:var(--muted);
+      cursor:pointer;
+      font-weight:600;
+      display:inline-flex; gap:8px; align-items:center;
+      transition:background .2s, transform .2s;
+    }
+    .btn:hover{
+      background:rgba(255,255,255,0.10);
+      transform:translateY(-2px);
+    }
+
+    .btn.primary{
+      background:linear-gradient(90deg,var(--accent),#5ec4e6);
+      color:#071133; border:none;
+      box-shadow:0 6px 18px rgba(124,92,255,0.28);
+    }
+
+    .btn.primary:hover{
+      transform:translateY(-3px);
+      box-shadow:0 10px 28px rgba(124,92,255,0.40);
+    }
+
+    /* Botón tema */
+    #themeToggle{
+      font-size:1.2rem;
+      width:44px; height:44px;
+      padding:0;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+    }
+
+    /* =========================================================
+       MAIN + TOPBAR
+    ========================================================== */
+
+    main{flex:1; padding:26px;}
+
+    .topbar{
+      display:grid;
+      grid-template-columns:1fr 280px;
+      gap:12px;
+      align-items:center;
+    }
+
+    /* Buscador */
+    .search{
+      display:flex; gap:10px; align-items:center;
+      background:var(--glass);
+      padding:10px 14px;
+      border-radius:14px;
+      border:1px solid var(--border-soft);
+      backdrop-filter: blur(8px);
+      transition:.3s;
+    }
+
+    .search:focus-within{
+      transform:translateY(-2px);
+      box-shadow:var(--shadow-card);
+    }
+
+    .search input{
+      flex:1;
+      background:transparent; border:0;
+      outline:none;
+      padding:8px;
+      color:inherit;
+      font-size:0.95rem;
+    }
+
+    /* ------- SELECT MINIMAL PRO -------- */
+select {
+  padding:12px 16px;
+  border-radius:10px;
+  border:1px solid #3b4252;
+  background:#111827;
+  color:#ffffff;
+  font-size:0.95rem;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .25s ease;
+}
+
+select:hover {
+  border-color:#6366f1;
+  box-shadow:0 0 10px rgba(99,102,241,0.35);
+}
+
+select option {
+  background:#0f1629;
+  color:#f1f5f9;
+  padding:12px;
+  font-size:0.95rem;
+}
+
+select option:hover {
+  background:#1f2937;
+  color:#ffffff;
+}
+
+
+    /* =========================================================
+       GRID DE JUEGOS
+    ========================================================== */
+
+    .grid{
+      margin-top:24px;
+      display:grid;
+      grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+      gap:20px;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--border-soft);
+      padding:14px;
+      border-radius:16px;
+      display:flex;
+      flex-direction:column; gap:10px;
+      transition:transform .2s ease, box-shadow .2s ease;
+      cursor:pointer;
+      backdrop-filter:blur(10px);
+    }
+
+    .card:hover{
+      transform:translateY(-6px);
+      box-shadow:var(--shadow-1);
+    }
+
+    .thumbnail{
+      width:100%; height:140px;
+      border-radius:12px;
+      background:#111;
+      background-size:cover; background-position:center;
+    }
+
+    .meta{display:flex; justify-content:space-between; align-items:center;}
+    .meta h3{margin:0; font-size:1.05rem; color:var(--accent-soft);}    
+    .meta small{color:var(--muted); font-size:0.82rem;}
+    .desc{font-size:0.86rem; color:var(--muted); min-height:38px;}
+
+    .card .actions{
+      display:flex;
+      gap:8px;
+      margin-top:auto;
+    }
+
+    .ghost{
+      background:transparent;
+      border:1px solid var(--border-soft);
+      padding:8px 10px;
+      border-radius:10px;
+      cursor:pointer; color:var(--muted);
+      font-weight:600;
+      transition:.2s;
+    }
+    .ghost:hover{
+      background:rgba(255,255,255,0.12);
+    }
+
+    /* =========================================================
+       FAVORITOS PANEL & ESTADÍSTICAS
+    ========================================================== */
+
+    aside{
+      width:300px;
+      position:sticky;
+      top:100px;
+    }
+
+    .panel{
+      background:var(--glass);
+      padding:18px;
+      border-radius:14px;
+      border:1px solid var(--border-soft);
+      backdrop-filter:blur(8px);
+      box-shadow:var(--shadow-card);
+    }
+
+    .favs-badge{
+      background:var(--glass);
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:700;
+      color:var(--accent);
+      border:1px solid var(--border-soft);
+    }
+
+    /* =========================================================
+       TOAST / NOTIFICACIONES
+    ========================================================== */
+
+    .toast{
+      position:fixed;
+      right:26px;
+      bottom:26px;
+      background:rgba(10,10,20,0.85);
+      padding:14px 18px;
+      border-radius:14px;
+      color:#fff;
+      box-shadow:var(--shadow-1);
+      opacity:0;
+      transform:translateY(20px);
+      transition:opacity .35s, transform .35s;
+      z-index:2000;
+    }
+
+    .toast.show{
+      opacity:1;
+      transform:translateY(0);
+    }
+
+    /* =========================================================
+       MODAL DE DETALLES DEL JUEGO
+    ========================================================== */
+
+    #gameModal{
+      position:fixed; inset:0;
+      background:rgba(0,0,0,0.75);
+      display:none;
+      justify-content:center;
+      align-items:center;
+      z-index:9999;
+      padding:30px;
+    }
+
+    #gameModalContent{
+      width:100%; max-width:650px;
+      background:var(--glass);
+      border-radius:16px;
+      padding:20px;
+      border:1px solid var(--border-soft);
+      backdrop-filter:blur(12px);
+      animation:fadeIn .35s ease;
+    }
+
+    @keyframes fadeIn{
+      from{opacity:0; transform:translateY(20px);}      
+      to{opacity:1; transform:translateY(0);}    
+    }
+
+    .modal-close{
+      text-align:right;
+      font-size:1.4rem;
+      cursor:pointer;
+      opacity:0.75;
+    }
+    .modal-close:hover{
+      opacity:1;
+    }
+
+    /* =========================================================
+       RATING ESTRELLAS
+    ========================================================== */
+
+    .stars{
+      display:flex;
+      gap:6px;
+      cursor:pointer;
+      font-size:1.6rem;
+      color:#aaa;
+    }
+
+    .star.active{
+      color:#ffd44a;
+      text-shadow:0 0 6px rgba(255,212,74,0.7);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width:780px){
+      .topbar{grid-template-columns:1fr;}
+      aside{display:none;}
+      header{padding:14px;}
+      .logo{width:42px;height:42px;}
+    }
+  
+/* Fondo más oscuro y con mejor contraste */
+body{
+  background: linear-gradient(135deg, #0a0a12, #1a1a27) !important;
+  color: #f0f0f0 !important;
+}
+
+/* Tarjetas más oscuras */
+.card{
+  background: rgba(20,20,28,0.65) !important;
+  border: 1px solid rgba(255,255,255,0.06) !important;
+}
+
+/* Panel lateral más oscuro */
+.panel{
+  background: rgba(18,18,26,0.6) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* Header más oscuro */
+header{
+  background: rgba(0,0,0,0.45) !important;
+  border-bottom: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* Buscador */
+.search{
+  background: rgba(30,30,40,0.55) !important;
+  border: 1px solid rgba(255,255,255,0.08) !important;
+}
+
+/* Selects */
+select{
+  background: #0d0d14 !important;
+  border: 1px solid #444 !important;
+}
+
+/* Modal */
+#gameModalContent{
+  background: rgba(25,25,35,0.7) !important;
+}
+
+</style>
+</head>
+
+<body>
+<div class="vaporwave-fog"></div>
+  <header>
+    <div class="brand">
+      <div class="logo">GH</div>
+      <div>
+        <h1>GameHub 3.0</h1>
+        <div style="font-size:0.85rem;color:var(--muted)">La biblioteca gamer definitiva</div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="themeToggle">🌙</button>
+      <div class="favs-badge" id="favCount">⭐ 0</div>
+      <button class="btn" id="btnFavView">Favoritos</button>
+      <button class="btn primary" id="btnQuiz">🧠 Quiz Gamer</button>
+    </div>
+  </header>
+  <main>
+    <!-- ============== TOPBAR ============== -->
+    <div class="topbar">
+      <div class="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style="opacity:.8">
+          <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path>
+          <circle cx="11" cy="11" r="6" stroke="currentColor" stroke-width="1.7"></circle>
+        </svg>
+
+        <input id="q" placeholder="Buscar juegos... (admite frases y exclusiones)" />
+
+        <select id="genreFilter">
+          <option value="all">Todos</option>
+          <option value="accion">Acción</option>
+          <option value="aventura">Aventura</option>
+          <option value="rpg">RPG</option>
+          <option value="deportes">Deportes</option>
+          <option value="terror">Terror</option>
+          <option value="simulacion">Simulación</option>
+        </select>
+
+        <select id="orderBy">
+          <option value="name">A-Z</option>
+          <option value="rating">Rating</option>
+          <option value="views">Más vistos</option>
+        </select>
+      </div>
+
+      <div style="display:flex; gap:10px; justify-content:flex-end;">
+        <button class="btn" id="btnViewAll">Ver todos</button>
+        <button class="btn" id="btnClearFavs">Limpiar favoritos</button>
+      </div>
+    </div>
+
+    <!-- ============== HISTORIAL DE BÚSQUEDAS ============== -->
+    <div id="searchHistory"
+      style="margin-top:14px; display:flex; flex-wrap:wrap; gap:10px; color:var(--muted); font-size:0.88rem;">
+    </div>
+
+    <!-- ============== CONTENIDO ============== -->
+    <section style="margin-top:20px; display:flex; gap:22px; align-items:flex-start;">
+      <div style="flex:1">
+        <div id="grid" class="grid"></div>
+      </div>
+
+      <!-- PANEL DERECHO -->
+      <aside>
+
+        <!-- Favoritos -->
+        <div class="panel">
+          <h3 style="margin:0 0 12px;">⭐ Favoritos</h3>
+          <div id="favsList" style="display:flex; flex-direction:column; gap:10px"></div>
+        </div>
+
+        <div style="height:16px"></div>
+
+        <!-- Estadísticas -->
+        <div class="panel">
+          <h4 style="margin:0 0 10px;">📊 Estadísticas</h4>
+          <div style="font-size:0.95rem; color:var(--muted)">
+            <div id="statViewed">Juegos vistos: 0</div>
+            <div id="statFavs">Favoritos: 0</div>
+            <div id="statRated">Calificados: 0</div>
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <!-- ============== TOAST ============== -->
+  <div class="toast" id="toast"></div>
+
+  <!-- ============== MODAL DE JUEGO ============== -->
+  <div id="gameModal">
+    <div id="gameModalContent">
+      <div class="modal-close" id="modalClose">✖</div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <!-- ============== INICIO DEL SCRIPT ============== -->
+  <script>
+    /* ============================================================
+       DATOS INICIALES
+    ============================================================ */
+
+    const juegosPorGenero = {
+      accion:[
+        {nombre:"Doom Eternal",rating:4.8,img:"https://fotografias-neox.atresmedia.com/clipping/cmsimages02/2020/01/15/D5B2069E-6D6C-447F-874E-734AFE25A009/98.jpg?crop=1280,720,x0,y0&width=1900&height=1069&optimize=high&format=webp",desc:"FPS frenético, acción sin parar."},
+        {nombre:"Call of Duty",rating:4.2,img:"https://fotografias-neox.atresmedia.com/clipping/cmsimages02/2021/05/28/46B44E35-0E3B-4B4A-B7AA-6BAECF2A9A94/default.jpg",desc:"Shooter militar moderno."},
+        {nombre:"Fortnite", rating:4.4, img:"https://disney.images.edge.bamgrid.com/ripcut-delivery/v2/variant/disney/65AC8D9A21712BE3BC6503B8AD94FFC964AA07C2BD8637419855CDF21DCC1292/compose?format=webp&width=2560",desc:"Battle royale colorido y creativo."},
+        {nombre:"Apex Legends", rating:4.5,img:"https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1172470/1eab2d507fbc0cfbfac0a4e2da51edc19703f4e4/capsule_616x353.jpg?t=1762457261",desc:"Shooter heroico con habilidades únicas."}
+      ],
+      aventura:[
+        {nombre:"Zelda: Breath of the Wild", rating:5,img:"https://sm.ign.com/ign_ap/game/default/botw-share-icon_zqy1.jpg",desc:"Explora un mundo abierto inolvidable."},
+        {nombre:"Uncharted 4",rating:4.8,img:"https://i.blogs.es/53a886/uncharted4/450_1000.webp",desc:"Aventura cinematográfica llena de acción."},
+        {nombre:"Tomb Raider",rating:4.6,img:"https://cdn1.epicgames.com/salesEvent/salesEvent/EGS_TombRaiderGAMEOFTHEYEAREDITION_CrystalDynamics_S1_2560x1440-0c41fcc8db62992e8d098d304b2277f8?resize=1&w=480&h=270&quality=medium",desc:"Exploración y aventuras modernas."}
+      ],
+      rpg:[
+        {nombre:"The Witcher 3",rating:5,img:"https://cdn1.epicgames.com/offer/14ee004dadc142faaaece5a6270fb628/EGS_TheWitcher3WildHuntCompleteEdition_CDPROJEKTRED_S1_2560x1440-82eb5cf8f725e329d3194920c0c0b64f",desc:"RPG profundo con historia madura."},
+        {nombre:"Skyrim",rating:4.7,img:"https://gaming-cdn.com/images/products/146/orig/the-elder-scrolls-v-skyrim-pc-juego-steam-europe-cover.jpg?v=1719414268",desc:"Sandbox épico lleno de aventuras."},
+        {nombre:"Elden Ring",rating:4.9,img:"https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1245620/capsule_616x353.jpg?t=1748630546",desc:"RPG de acción desafiante."}
+      ],
+      deportes:[
+        {nombre:"FIFA 24",rating:4.1,img:"https://gaming-cdn.com/images/products/13588/orig/ea-sports-fc-24-pc-juego-ea-app-cover.jpg?v=1696842619",desc:"Fútbol realista y competitivo."},
+        {nombre:"NBA 2K24",rating:4.0,img:"https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2338770/header.jpg?t=1756743406",desc:"Baloncesto con modo carrera."},
+        {nombre:"Rocket League",rating:4.6,img:"https://cdn1.epicgames.com/offer/9773aa1aa54f4f7b80e44bef04986cea/EGS_RocketLeague_PsyonixLLC_S1_2560x1440-4c231557ef0a0626fbb97e0bd137d837",desc:"Coches + fútbol."}
+      ],
+      terror:[
+        {nombre:"Resident Evil 4",rating:4.9,img:"https://gaming-cdn.com/images/products/6772/orig/resident-evil-4-pc-juego-steam-europe-cover.jpg?v=1684153325",desc:"Survival horror de acción."},
+        {nombre:"Outlast",rating:4.5,img:"https://www.nintendo.com/eu/media/images/10_share_images/games_15/nintendo_switch_download_software_1/H2x1_NSwitchDS_OutlastBundleOfTerror.jpg",desc:"Horror psicológico extremo."},
+        {nombre:"Phasmophobia",rating:4.7,img:"https://img.opencritic.com/game/17566/NuHoENSh.jpg",desc:"Caza de fantasmas cooperativa."}
+      ],
+      simulacion:[
+        {nombre:"Minecraft",rating:5,img:"https://www.nintendo.com/eu/media/images/10_share_images/games_15/nintendo_switch_4/2x1_NSwitch_Minecraft.jpg",desc:"Construcción y creatividad infinita."},
+        {nombre:"The Sims 4",rating:4.3,img:"https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1222670/capsule_616x353.jpg?t=1763056950",desc:"Simulación social completa."},
+        {nombre:"Stardew Valley",rating:4.9,img:"https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/413150/capsule_616x353.jpg?t=1754692865",desc:"Farming RPG encantador."}
+      ]
+    };
+
+    /* ============================================================
+       VARIABLES DE ESTADO
+    ============================================================ */
+
+    const LS_KEY = 'gamehub_favs_v6';
+    const LS_STATS = 'gamehub_stats_v2';
+    const LS_HISTORY = 'gamehub_search_hist_v1';
+    const LS_THEME = 'gamehub_theme_v1';
+
+    let favoritos = JSON.parse(localStorage.getItem(LS_KEY) || '[]');
+    let stats = JSON.parse(localStorage.getItem(LS_STATS) || '{"viewed":0,"rated":0}');
+    let history = JSON.parse(localStorage.getItem(LS_HISTORY) || '[]');
+
+    const grid = document.getElementById('grid');
+    const q = document.getElementById('q');
+    const genreFilter = document.getElementById('genreFilter');
+    const orderBy = document.getElementById('orderBy');
+    const favsList = document.getElementById('favsList');
+    const toast = document.getElementById('toast');
+    const searchHistoryDiv = document.getElementById('searchHistory');
+
+    /* ============================================================
+       UTILIDADES
+    ============================================================ */
+
+    function saveFavs(){ localStorage.setItem(LS_KEY, JSON.stringify(favoritos)); }
+    function saveStats(){ localStorage.setItem(LS_STATS, JSON.stringify(stats)); }
+    function saveHistory(){ localStorage.setItem(LS_HISTORY, JSON.stringify(history)); }
+
+    function showToast(msg){
+      toast.textContent = msg;
+      toast.classList.add("show");
+      setTimeout(()=>toast.classList.remove("show"), 2200);
+    }
+
+    function confettiEffect(){
+      for (let i = 0; i < 30; i++){
+        const c = document.createElement("div");
+        c.style.position = "fixed";
+        c.style.width = "8px";
+        c.style.height = "8px";
+        c.style.borderRadius = "50%";
+        c.style.left = Math.random()*100 + "vw";
+        c.style.top = "-10px";
+        c.style.background = `hsl(${Math.random()*360},90%,60%)`;
+        c.style.opacity = ".9";
+        c.style.zIndex = 3000;
+        c.style.transition = "transform 1.2s ease, opacity 1.2s";
+
+        document.body.appendChild(c);
+
+        setTimeout(()=>{
+          c.style.transform = `translateY(${window.innerHeight + 100}px) rotate(${Math.random()*360}deg)`;
+          c.style.opacity = 0;
+        },10);
+
+        setTimeout(()=>c.remove(), 1500);
+      }
+    }
+
+    /* ============================================================
+       HISTORIAL
+    ============================================================ */
+
+    function renderHistory(){
+      searchHistoryDiv.innerHTML = "";
+      history.slice(-8).forEach(h=>{
+        const tag = document.createElement("span");
+        tag.textContent = h;
+        tag.className = "btn";
+        tag.style.fontSize = "0.8rem";
+        tag.onclick = ()=>{ q.value = h; renderAll(); };
+        searchHistoryDiv.appendChild(tag);
+      });
+    }
+
+    function addToHistory(term){
+      if (!term.trim()) return;
+      if (history.includes(term)) return;
+      history.push(term);
+      if (history.length > 12) history.shift();
+      saveHistory();
+      renderHistory();
+    }
+
+    renderHistory();
+
+    /* ============================================================
+       BUSCADOR AVANZADO
+    ============================================================ */
+
+    function parseSearch(str){
+      const terms = [];
+      const excl = [];
+
+      const regex = /"([^"]+)"|(\S+)/g;
+      let m;
+      while((m = regex.exec(str))){
+        const t = m[1] || m[2];
+        if (t.startsWith("-")) excl.push(t.substring(1).toLowerCase());
+        else terms.push(t.toLowerCase());
+      }
+      return {terms, excl};
+    }
+
+    function matchGame(game, searchObj){
+      const full = (game.nombre + " " + game.desc).toLowerCase();
+
+      for (const ex of searchObj.excl){
+        if (full.includes(ex)) return false;
+      }
+      for (const t of searchObj.terms){
+        if (!full.includes(t)) return false;
+      }
+      return true;
+    }
+
+    /* ============================================================
+       ORDENAMIENTO
+    ============================================================ */
+
+    function sortGames(list){
+      const mode = orderBy.value;
+      if (mode === "name"){
+        list.sort((a,b)=>a.nombre.localeCompare(b.nombre));
+      } else if (mode === "rating"){
+        list.sort((a,b)=> (b.rating||0) - (a.rating||0));
+      } else if (mode === "views"){
+        list.sort((a,b)=> (b.views||0) - (a.views||0));
+      }
+      return list;
+    }
+
+    /* ============================================================
+       RENDER PRINCIPAL DE JUEGOS
+    ============================================================ */
+
+    function renderAll(){
+      const genre = genreFilter.value;
+      let lista = [];
+
+      if (genre === "all"){
+        for (const g in juegosPorGenero) lista = lista.concat(juegosPorGenero[g]);
+      } else {
+        lista = Array.isArray(juegosPorGenero[genre]) ? juegosPorGenero[genre].slice() : [];
+      }
+
+      const text = q.value.trim();
+      if (text !== ""){
+        addToHistory(text);
+        const parsed = parseSearch(text);
+        lista = lista.filter(game=>matchGame(game, parsed));
+      }
+
+      sortGames(lista);
+
+      grid.innerHTML = "";
+      lista.forEach(game=>{
+        if (!game.views) game.views = 0;
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        card.innerHTML = `
+          <div class="thumbnail" style="background-image:url('${game.img}')"></div>
+          <div class="meta">
+            <h3>${game.nombre}</h3>
+            <small>⭐ ${ (typeof game.rating === 'number') ? game.rating.toFixed(1) : (game.rating || '—') }</small>
+          </div>
+          <p class="desc">${game.desc}</p>
+          <div class="actions">
+            <button class="ghost">Ver</button>
+            <button class="ghost">Fav</button>
+          </div>
+        `;
+
+        const [btnVer, btnFav] = card.querySelectorAll(".ghost");
+
+        btnVer.onclick = ()=>{
+          openModal(game);
+          game.views++;
+          stats.viewed++;
+          saveStats();
+          renderStats();
+        };
+
+        btnFav.onclick = ()=>{ toggleFav(game); };
+
+        grid.appendChild(card);
+      });
+
+      stats.viewed = stats.viewed || 0;
+      saveStats();
+    }
+
+    renderAll();
+
+    /* ============================================================
+       MODAL DETALLADO DE JUEGO
+    ============================================================ */
+
+    const modal = document.getElementById("gameModal");
+    const modalBody = document.getElementById("modalBody");
+    const modalClose = document.getElementById("modalClose");
+
+    modalClose.onclick = ()=> modal.style.display = "none";
+    modal.onclick = e => { if(e.target===modal) modal.style.display = "none"; };
+
+    function openModal(game){
+      modalBody.innerHTML = `
+        <h2 style="margin-top:0">${game.nombre}</h2>
+        <img src="${game.img}" style="width:100%;border-radius:12px;margin-bottom:14px;" />
+        <p style="color:var(--muted);font-size:1rem;">${game.desc}</p>
+
+        <h3>⭐ Tu calificación</h3>
+        <div class="stars" id="starsArea"></div>
+
+        <button class="btn primary" id="modalFavBtn">Añadir a favoritos</button>
+      `;
+
+      const starsArea = modalBody.querySelector("#starsArea");
+      for(let i=1;i<=5;i++){
+        const s = document.createElement("span");
+        s.textContent = "★";
+        s.dataset.val = i;
+        s.className = "star";
+        s.onclick = ()=>rateGame(game, i, starsArea);
+        starsArea.appendChild(s);
+      }
+
+      if (game._rated){
+        for (let i=0;i<game._rated;i++){
+          if (starsArea.children[i]) starsArea.children[i].classList.add("active");
+        }
+      }
+
+      modalBody.querySelector("#modalFavBtn").onclick = () => toggleFav(game);
+
+      modal.style.display = "flex";
+    }
+
+    function rateGame(game, value, area){
+      game._rated = value;
+      stats.rated = (stats.rated||0) + 1;
+      saveStats();
+
+      [...area.children].forEach((s,idx)=>{
+        s.classList.toggle("active", idx<value);
+      });
+
+      showToast("⭐ Calificación guardada");
+      renderStats();
+      saveFavs();
+    }
+
+    /* ============================================================
+       FAVORITOS
+    ============================================================ */
+
+    function toggleFav(game){
+      const idx = favoritos.findIndex(f=>f.nombre===game.nombre);
+
+      if (idx === -1){
+        favoritos.push({...game});
+        saveFavs();
+        renderFavs();
+        confettiEffect();
+        showToast("Añadido a favoritos");
+      } else {
+        favoritos.splice(idx,1);
+        saveFavs();
+        renderFavs();
+        showToast("Eliminado de favoritos");
+      }
+
+      document.getElementById("favCount").textContent = `⭐ ${favoritos.length}`;
+      renderStats();
+    }
+
+    function renderFavs(){
+      favsList.innerHTML = "";
+      favoritos.forEach((f,i)=>{
+        const div = document.createElement("div");
+        div.style.display = "flex";
+        div.style.justifyContent = "space-between";
+        div.style.alignItems = "center";
+        div.style.background = "var(--card)";
+        div.style.padding = "10px";
+        div.style.borderRadius = "10px";
+
+        div.innerHTML = `
+          <span>${i+1}. ${f.nombre}</span>
+          <button class="ghost" style="padding:4px 8px;">✖</button>
+        `;
+
+        div.querySelector("button").onclick = () => toggleFav(f);
+
+        favsList.appendChild(div);
+      });
+
+      document.getElementById("favCount").textContent = `⭐ ${favoritos.length}`;
+      document.getElementById("statFavs").textContent = "Favoritos: " + favoritos.length;
+    }
+
+    renderFavs();
+
+    /* ============================================================
+       ESTADÍSTICAS
+    ============================================================ */
+
+    function renderStats(){
+      document.getElementById("statViewed").textContent = "Juegos vistos: " + (stats.viewed||0);
+      document.getElementById("statFavs").textContent = "Favoritos: " + favoritos.length;
+      document.getElementById("statRated").textContent = "Calificados: " + (stats.rated||0);
+    }
+    renderStats();
+
+    /* ============================================================
+       EVENTOS GENERALES
+    ============================================================ */
+
+    q.oninput = ()=>{ renderAll(); };
+
+    genreFilter.onchange = renderAll;
+    orderBy.onchange = renderAll;
+
+    document.getElementById("btnViewAll").onclick = ()=>{
+      q.value = "";
+      genreFilter.value = "all";
+      renderAll();
+    };
+
+    document.getElementById("btnClearFavs").onclick = ()=>{
+      favoritos = [];
+      saveFavs();
+      renderFavs();
+      document.getElementById("favCount").textContent = "⭐ 0";
+      renderStats();
+      showToast("Favoritos limpiados");
+    };
+
+    document.getElementById("btnFavView").onclick = ()=>{
+      q.value = "";
+      genreFilter.value = "all";
+      renderFavs();
+      grid.innerHTML = "";
+      favoritos.forEach(f=>{
+        const div = document.createElement("div");
+        div.className = "card";
+        div.innerHTML = `
+          <div class="thumbnail" style="background-image:url('${f.img}')"></div>
+          <div class="meta">
+            <h3>${f.nombre}</h3>
+            <small>⭐ ${f.rating}</small>
+          </div>
+          <p class="desc">${f.desc}</p>
+          <div class="actions">
+            <button class="ghost">Ver</button>
+            <button class="ghost">Quitar</button>
+          </div>
+        `;
+        const [btnVer,btnQ] = div.querySelectorAll(".ghost");
+        btnVer.onclick = ()=>openModal(f);
+        btnQ.onclick = ()=>toggleFav(f);
+
+        grid.appendChild(div);
+      });
+    };
+
+    /* ============================================================
+       MODO OSCURO / CLARO
+    ============================================================ */
+
+    // Inicializar theme desde localStorage (corrección)
+    let theme = localStorage.getItem(LS_THEME) || 'dark';
+
+    // Usar el botón existente en el DOM en lugar de crear uno nuevo
+    const toggleThemeBtn = document.getElementById('themeToggle');
+
+    function applyTheme(){
+      if (theme === "light"){
+        document.body.classList.add('light');
+        if (toggleThemeBtn) toggleThemeBtn.textContent = '🌞';
+      } else {
+        document.body.classList.remove('light');
+        if (toggleThemeBtn) toggleThemeBtn.textContent = '🌙';
+      }
+    }
+
+    if (toggleThemeBtn){
+      toggleThemeBtn.onclick = ()=>{
+        theme = (theme === 'dark') ? 'light' : 'dark';
+        localStorage.setItem(LS_THEME, theme);
+        applyTheme();
+      };
+    }
+
+    applyTheme();
+
+    /* ============================================================
+       QUIZ GAMER 🧠
+    ============================================================ */
+
+    document.getElementById("btnQuiz").onclick = openQuiz;
+
+    function openQuiz(){
+      const modalQuiz = document.createElement("div");
+      modalQuiz.className = "modal";
+      modalQuiz.style.display = "flex";
+
+      modalQuiz.innerHTML = `
+        <div class="modal-content" style="max-width:600px; background:var(--glass); padding:20px; border-radius:12px;">
+          <span class="close" id="quizClose" style="cursor:pointer; float:right; font-size:20px;">&times;</span>
+          <h2>🧠 Quiz Gamer</h2>
+          <p id="quizQuestion"></p>
+          <div id="quizOptions" style="display:flex;flex-direction:column;gap:10px;margin-top:20px;"></div>
+        </div>
+      `;
+
+      document.body.appendChild(modalQuiz);
+
+      const quizData = [
+        {
+          q: "¿Qué tipo de experiencia prefieres?",
+          a: ["Acción intensa", "Explorar mundos", "Terror y suspenso", "Construir y crear"]
+        },
+        {
+          q: "¿Qué ritmo te atrae más?",
+          a: ["Rápido", "Calmado", "Cinematográfico", "Competitivo"]
+        },
+        {
+          q: "Elige un escenario:",
+          a: ["Fantasía", "Realista", "Espacial", "Post-apocalíptico"]
+        }
+      ];
+
+      const resultsMap = {
+        "Acción intensa": "Doom Eternal",
+        "Explorar mundos": "Zelda: Breath of the Wild",
+        "Terror y suspenso": "Resident Evil 4",
+        "Construir y crear": "Minecraft",
+        "Rápido": "Fortnite",
+        "Calmado": "Stardew Valley",
+        "Cinematográfico": "Uncharted 4",
+        "Competitivo": "Rocket League",
+        "Fantasía": "Elden Ring",
+        "Realista": "FIFA 24",
+        "Espacial": "No Man's Sky",
+        "Post-apocalíptico": "The Last of Us"
+      };
+
+      let step = 0;
+      const chosen = [];
+
+      const qText = modalQuiz.querySelector("#quizQuestion");
+      const qOpts = modalQuiz.querySelector("#quizOptions");
+
+      function showStep(){
+        const data = quizData[step];
+        qText.textContent = data.q;
+        qOpts.innerHTML = "";
+
+        data.a.forEach(opt=>{
+          const btn = document.createElement("button");
+          btn.className = "btn primary";
+          btn.textContent = opt;
+          btn.onclick = ()=>{
+            chosen.push(opt);
+            step++;
+            if (step < quizData.length) showStep();
+            else finishQuiz();
+          };
+          qOpts.appendChild(btn);
+        });
+      }
+
+      function finishQuiz(){
+        qText.textContent = "Procesando respuestas…";
+
+        setTimeout(()=>{
+          const pick = chosen.map(c=>resultsMap[c]).find(x=>x) || "Stardew Valley";
+
+          qText.innerHTML = `🎮 Te recomendamos: <strong>${pick}</strong>`;
+          qOpts.innerHTML = "";
+
+          const btnClose = document.createElement("button");
+          btnClose.className = "btn";
+          btnClose.textContent = "Cerrar";
+          btnClose.onclick = ()=>modalQuiz.remove();
+          qOpts.appendChild(btnClose);
+
+          showToast("Recomendación lista 🎮");
+        },800);
+      }
+
+      modalQuiz.querySelector("#quizClose").onclick = ()=>modalQuiz.remove();
+
+      showStep();
+    }
+
+  </script>
+</body>
+</html>
